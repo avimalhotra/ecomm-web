@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>{{title}}</title>
+     <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+     {% include "topnav.html" %}
+    {% include "header.html" %}
+     <main>
+          <div class="container">
+               <nav class="breadcrumb">
+                    <ol class="flex">
+                         <li><a href="/">Home</a></li>
+                         <li><a href="/about">About Us</a>
+                    </ol>
+               </nav>
+              <h1>{{title | title}}</h1>
+              <h2>Cars</h2>
+          <ol>
+              {% for i in cars %}
+              <li>{{i | title}}</li>
+              {% endfor %}
+          </ol>
+          <h2>Car</h2>
+          <ol>
+               {% for i,j in car %}
+               <li>{{i | title}} - {{j}}</li>
+               {% endfor %}
+          </ol>
+          <h2>if</h2>
+          {% if id %}
+          
+          <p>id is {{id}}, next is {{id+1}}</p>
+
+          {% else %}
+          
+          <p>No id found</p>
+          
+          {% endif %}
+          </div>
+     </main>
+     {% include "footer.html" %}
+     <script src="js/jquery.min.js"></script>
+<!-- <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
+ <script src="js/common.js"></script>
+</body>
+</html>
