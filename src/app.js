@@ -1,6 +1,7 @@
 import express from "express";
 import path from "node:path";
 import nunjucks from "nunjucks";
+import router from "./routes/api.js";
 
 
 const app=express();
@@ -18,6 +19,9 @@ nunjucks.configure(path.resolve('src/public/views'),{
     noCache:false,
     watch:true
 }); 
+
+import mongoose from "./dao.js";
+app.use("/api",router);
 
 
 app.get("/",(req,res)=>{

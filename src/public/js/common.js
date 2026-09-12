@@ -1,4 +1,5 @@
 $(function(){
+
      $(".account").click(function(){
           $(this).toggleClass("active");
           $(".account-dropdown").slideToggle();
@@ -90,6 +91,14 @@ saleTime();
 setInterval(saleTime,1000);
 
 
+     $("header form").on("submit",function(e){
+          e.preventDefault();
+          const item=this.product.value;
+          
+          fetch(`/api/search?product=${item}`).then(i=>i.json()).then(i=>console.log(i)).catch(e=>console.warn(e));
+
+          
+     });
 
 
 });

@@ -19,28 +19,7 @@
                     </ol>
                </nav>
               <h1>{{title | title}}</h1>
-              <h2>Cars</h2>
-          <ol>
-              {% for i in cars %}
-              <li>{{i | title}}</li>
-              {% endfor %}
-          </ol>
-          <h2>Car</h2>
-          <ol>
-               {% for i,j in car %}
-               <li>{{i | title}} - {{j}}</li>
-               {% endfor %}
-          </ol>
-          <h2>if</h2>
-          {% if id %}
-          
-          <p>id is {{id}}, next is {{id+1}}</p>
-
-          {% else %}
-          
-          <p>No id found</p>
-          
-          {% endif %}
+            
           </div>
      </main>
      {% include "footer.html" %}
