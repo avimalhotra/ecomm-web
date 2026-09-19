@@ -16,9 +16,10 @@
                               </nav>
                               <div class="flex align-center posr">
                                    <button class="search"><span class="fa fa-search" aria-hidden="true"></span></button>
-                                   <form role="search">
-                                        <input type="search" name="product" placeholder="What you are looking for? " required>
+                                   <form role="search" action="/search">
+                                        <input type="search" name="product" placeholder="What you are looking for? " required list="searchlist">
                                         <button><span class="fa fa-magnifying-glass" aria-hidden="true"></span></button>
+                                        <datalist id="searchlist"></datalist>
                                    </form>
                                    <a href="/wishlist" class="wishlist"><span class="fa fa-heart" aria-hidden="true"></span></a>
                                    <a href="/cart" class="cart"><span class="fa fa-shopping-cart" aria-hidden="true"></span></a>

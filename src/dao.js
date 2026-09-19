@@ -10,7 +10,7 @@ async function main() {
      console.log(`${db.name} Database Connected Successfully `);
 }
 
-db.on("err",err=>console.warn(err));
+db.on("error",err=>console.warn(err));
 db.once("open",()=>console.log("db open"));
 
 export default mongoose;

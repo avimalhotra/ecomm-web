@@ -1,8 +1,8 @@
 import express from "express";
 import path from "node:path";
 import nunjucks from "nunjucks";
-import router from "./routes/api.js";
-
+import apiRouter from "./routes/api.js";
+import productRouter from "./routes/product.js";
 
 const app=express();
 const port=process.env.PORT || 8080;
@@ -21,7 +21,10 @@ nunjucks.configure(path.resolve('src/public/views'),{
 }); 
 
 import mongoose from "./dao.js";
-app.use("/api",router);
+import Product from "./models/Product.js";
+
+app.use("/api",apiRouter);
+app.use("/products",productRouter);
 
 
 app.get("/",(req,res)=>{
@@ -35,6 +38,21 @@ app.get("/about",(req,res)=>{
         car:{ name:"Brezza", engine:1000, power:110, torque: 170},
         id:22
      });
+});
+
+app.get("/search",(req,res)=>{
+     const item=req.query;
+     console.log( item.product );
+     
+      Product.find({name:new RegExp(item.product)}).select("-_id")
+          .then(results=>{
+               res.status(200).render("search.html", { items:results });
+          })
+          .catch(err=>{
+               res.status(200).render("search.html", { error:err });
+          });
+     
+     
 });
 
 app.get("/contact",(req,res)=>{

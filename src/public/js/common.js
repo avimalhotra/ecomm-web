@@ -91,12 +91,20 @@ saleTime();
 setInterval(saleTime,1000);
 
 
-     $("header form").on("submit",function(e){
-          e.preventDefault();
-          const item=this.product.value;
+     $("header form input").on("input",function(e){
+          const item=this.value;
+          document.querySelector("header #searchlist").innerHTML="";
           
-          fetch(`/api/search?product=${item}`).then(i=>i.json()).then(i=>console.log(i)).catch(e=>console.warn(e));
-
+          if(item.length>=3){
+               fetch(`/api/search?product=${item}`).then(i=>i.json()).then(i=>{
+               
+                    i.forEach((elem,ind)=>{
+                         document.querySelector("header #searchlist").innerHTML+=`<option>${elem.name}</option>`;
+                    });
+               
+               }).catch(e=>console.warn(e));
+          }
+          
           
      });
 
