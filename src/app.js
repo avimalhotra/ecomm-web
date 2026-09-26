@@ -22,6 +22,7 @@ nunjucks.configure(path.resolve('src/public/views'),{
 
 import mongoose from "./dao.js";
 import Product from "./models/Product.js";
+import Category from "./models/Category.js";
 
 app.use("/api",apiRouter);
 app.use("/products",productRouter);
@@ -51,8 +52,19 @@ app.get("/search",(req,res)=>{
           .catch(err=>{
                res.status(200).render("search.html", { error:err });
           });
-     
-     
+});
+
+app.get("/:cat",async (req,res)=>{
+
+      const category = await Category.findOne({ slug: req.params.cat});
+      
+     Product.find({ category : category._id}).populate("category").select("-_id").then(i=>{
+          
+          res.status(200).render("category.html", { title:"Category", data:i });
+      });
+
+       
+
 });
 
 app.get("/contact",(req,res)=>{

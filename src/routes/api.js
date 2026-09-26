@@ -53,6 +53,23 @@ router.get('/products',(req,res)=>{
      });     
 });
 
+router.get('/:cat',async (req,res)=>{
+     const item=req.params.cat;
+
+     const category = await Category.findOne({ slug: item});
+
+     Product.find({ category : category._id}).populate("category").select("-_id")
+     .then(results=>{
+         if(results.length){
+           return res.status(200).json(results);
+         }
+         res.status(200).json({"message":"no category found"});
+     })
+     .catch(err=>{
+          console.warn(err)
+     });     
+});
+
 
 
 export default router;
