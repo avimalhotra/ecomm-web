@@ -18,13 +18,23 @@
                          <li><a href="/products">products</a>
                     </ol>
                </nav>
-              <h1>{{ data.name}}</h1>
+              <h1>{{ title }}</h1>
 
-              <ol>
-                    {% for i in data %}   
-                         <li>{{ i.name }}</li>
-                    {% endfor %}    
-               </ol>
+
+              <div class="row">
+                {% for i in data %}   
+                    <div class="col-3 col-t-6 col-p-12">
+                         <div class="card">
+                              <a href="/products/{{i.name | replace(' ','-')}}">
+                                   <h2>{{ i.name | title }}</h2>
+                              </a>
+                         </div>
+                    </div>
+                {% endfor %}    
+              </div>
+
+
+            
             
           </div>
      </main>

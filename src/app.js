@@ -1,10 +1,19 @@
 import express from "express";
 import path from "node:path";
 import nunjucks from "nunjucks";
+
 import apiRouter from "./routes/api.js";
 import productRouter from "./routes/product.js";
 
+import jwt from "jsonwebtoken";
+import authenticate from "./jwtauth.js";
+
+
 const app=express();
+// Built-in middleware for parsing JSON
+app.use(express.json());
+// Built-in middleware for parsing URL-encoded data
+app.use(express.urlencoded({ extended: true }));
 const port=process.env.PORT || 8080;
 
 
@@ -41,6 +50,14 @@ app.get("/about",(req,res)=>{
      });
 });
 
+app.get("/contact",(req,res)=>{
+     res.status(200).render("contact.html", { title:"Contact US" });
+});
+
+app.get("/signup",(req,res)=>{
+     res.status(200).render("signup.html", { title:"Sign Up" });
+});
+
 app.get("/search",(req,res)=>{
      const item=req.query;
      console.log( item.product );
@@ -54,22 +71,61 @@ app.get("/search",(req,res)=>{
           });
 });
 
+app.get("/admin",(req,res)=>{
+     res.status(404).render("admin.html",{ title:"Hello Admin" });
+});
+
+app.post("/admin",(req,res)=>{
+
+      const { email, pass } = req.body;
+
+      if( email=="a@b" && pass==123456){
+          const token=jwt.sign({
+                id: 1,
+                email,
+                role: 'Admin'
+            },
+             process.env.JWT_SECRET,
+             {
+                expiresIn: '1h'
+            }
+          );
+
+          res.cookie("token", token, {
+               httpOnly: true,
+               sameSite: "lax",
+               maxAge: 60 * 60 * 1000
+          });
+
+          // return res.json({message: 'Login Successful',token});
+          // return res.status(200).json({message:"success",token, decode:jwt.verify(token,process.env.JWT_SECRET)});
+          return res.status(200).render('add.html',{title:"Add Products",message:"success",token, decode:jwt.verify(token,process.env.JWT_SECRET)});
+      }
+
+      res.status(401).json({ message: 'Invalid Email or Password'});
+     //  res.status(404).render("admin.html",{ title:"Hello Admin" });
+});
+
+app.get("/add", authenticate ,(req,res)=>{
+     res.status(404).render("add.html",{ title:"Add Products" });
+});
+
+
 app.get("/:cat",async (req,res)=>{
 
       const category = await Category.findOne({ slug: req.params.cat});
       
-     Product.find({ category : category._id}).populate("category").select("-_id").then(i=>{
+     Product.find({ category : category._id }).populate("category").select("-_id").then(i=>{
           
           res.status(200).render("category.html", { title:"Category", data:i });
+
+      }).catch(()=>{
+           res.status(404).render("error.html",{ title:"No Product Found" });
       });
-
        
-
 });
 
-app.get("/contact",(req,res)=>{
-     res.status(200).render("contact.html", { title:"Contact US" });
-});
+
 
 
 /* wild card handler */

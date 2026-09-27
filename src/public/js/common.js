@@ -154,5 +154,4 @@ setInterval(saleTime,1000);
 
       productsApi();
 
-
 });
