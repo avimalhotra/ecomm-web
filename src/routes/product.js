@@ -13,7 +13,6 @@ router.get('/:pname',(req,res)=>{
 
       Product.find({name:item}).populate("category","name").select("-_id")
           .then(results=>{
-               console.log( results);  
                //  return res.status(200).json(results);
                res.status(200).render("product.html",{product:results[0]});
          
