@@ -4,6 +4,12 @@ import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 
 
+router.use((req,res,next)=>{
+       // enable CORS policies
+//     res.header('Access-Control-Allow-Origin',"*");
+    next();
+})
+
 router.get('/',(req,res)=>{
     res.status(200).send("api");
 });
@@ -26,6 +32,7 @@ router.get('/search',(req,res)=>{
 router.get('/category',(req,res)=>{
      const item=req.query.q;
 
+     
      Category.find({slug:new RegExp(item)}).select("name slug -_id")
      .then(results=>{
          if(results.length){

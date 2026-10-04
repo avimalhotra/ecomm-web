@@ -1,6 +1,8 @@
 import express from "express";
 import path from "node:path";
 import nunjucks from "nunjucks";
+import helmet from "helmet";
+
 
 import apiRouter from "./routes/api.js";
 import productRouter from "./routes/product.js";
@@ -21,7 +23,18 @@ const app=express();
 app.use(express.json());
 // Built-in middleware for parsing URL-encoded data
 app.use(express.urlencoded({ extended: true }));
-const port=process.env.PORT || 8080;
+
+import rateLimit from "express-rate-limit";
+
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per window
+  message: "Too many requests from this IP, please try again later."
+});
+
+// app.use(limiter);
+app.use(helmet());
 
 
 app.use(express.static(path.resolve("src/public")));
@@ -53,7 +66,7 @@ nunjucks.configure(path.resolve('src/public/views'),{
     express:app,
     autoscape:true,
     noCache:false,
-    watch:true
+//     watch:true
 }); 
 
 import mongoose from "./dao.js";
@@ -228,11 +241,9 @@ app.get("/:cat",async (req,res)=>{
 });
 
 
-
-
 /* wild card handler */
 app.get('/*splat',(req,res)=>{
     res.status(404).render("error.html",{ title:"Page Not Found" });
 });
 
-app.listen(port,()=>console.log(`App running at http://127.0.0.1:${port}`));
+export default app;

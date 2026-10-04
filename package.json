@@ -5,20 +5,26 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --env-file=.env src/app",
-    "dev": "node --env-file=.env --watch src/app"
+    "test": "mocha",
+    "start": "node --env-file=.env src/server",
+    "dev": "node --env-file=.env --watch src/server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
     "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.5",
     "nunjucks": "^3.1.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^12.0.3",
+    "supertest": "^7.3.1"
   }
 }
